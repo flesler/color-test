@@ -1,0 +1,104 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+
+	<title>Color Test</title>
+	<meta name="description" content="Color Test">
+	<meta name="author" content="Ariel Flesler">
+
+	<style type="text/css">
+	body {
+		background: black;
+	}
+
+	li {
+		border: 1px solid white;
+		list-style: none;
+		height: 400px;
+		position: relative;
+	}
+		li div {
+			width: 30%;
+			height: 300px;
+			position: absolute;
+			border: 1px solid white;
+		}
+
+		.full {
+			left: 10%;
+			top: 50px;
+		}
+
+		@-webkit-keyframes move {
+			from { left: 55%; }
+			to { left: 65%; }
+		}
+
+		@keyframes move {
+			from { left: 55%; }
+			to { left: 65%; }
+		}
+
+		.layer {
+			-webkit-animation: move 2s ease-in-out infinite;
+			-moz-animation: move 2s ease-in-out infinite;
+			-ms-animation: move 2s ease-in-out infinite;
+			animation: move 2s ease-in-out infinite;
+		}
+
+		.below {
+			left: 55%;
+			top: 20px;
+
+			-webkit-animation-direction: alternate;
+			-moz-animation-direction: alternate;
+			-ms-animation-direction: alternate;
+			animation-direction: alternate;
+		}
+
+		.above {
+			left: 65%;
+			top: 80px;
+			mix-blend-mode: lighten;
+			-webkit-animation-direction: alternate-reverse;
+			-moz-animation-direction: alternate-reverse;
+			-ms-animation-direction: alternate-reverse;
+			animation-direction: alternate-reverse;
+		}
+	</style>
+</head>
+
+<body>
+	<ul id="list">
+	</ul>
+
+	<script type="text/javascript">
+	const COLORS = ['5599FF', 'FFFF00', '005555', 'AFB09F']
+
+	function dom(tag, props, parent) {
+		const elem = document.createElement(tag)
+		for (const prop in props) {
+			elem[prop] = props[prop]
+		}
+		if (parent) {
+			parent.appendChild(elem)
+		}
+		return elem
+	}
+
+	const ul = document.getElementById('list')
+	COLORS.forEach((color) => {
+		const li = dom('li', {}, ul)
+		const hex = color.toString(16)
+		const rb = hex.slice(0, 2) + '00' + hex.slice(4, 6)
+		const g = '00' + hex.slice(2, 4) + '00'
+
+		dom('div', { className: 'full', style: 'background:#' + hex }, li)
+		dom('div', { className: 'layer below', style: 'background:#' + rb }, li)
+		dom('div', { className: 'layer above', style: 'background:#' + g }, li)
+	})
+	</script>
+</body>
+</html>
